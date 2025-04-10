@@ -21,7 +21,7 @@ sequenceDiagram
     participant Vector as VectorStore
     participant Chat as ChatClient
     participant MCP as MCPSyncClient
-    participant AI as Bedrock AI
+    participant AI as Docker Model Runner 
 
     User->>Controller: POST /{id}/inquire
     

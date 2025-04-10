@@ -10,6 +10,10 @@ A Spring Boot application that provides an AI-powered dog adoption service using
 
 _Note:_ This is a fork of the [sample app in AWS Samples](https://github.com/aws-samples/Sample-Model-Context-Protocol-Demos/tree/main)
 
+<p align="center">
+<img src="welcome-home-prancer.jpg" width="480">
+</p>
+
 ## Architecture
 
 ```mermaid

@@ -11,6 +11,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.DynamicPropertyRegistrar;
+import org.testcontainers.containers.DockerModelRunnerContainer;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
@@ -31,7 +32,7 @@ public class TestAdoptionsApplication {
 
 @Configuration
 @Testcontainers
-class TestContainersConfiguration {
+class TestcontainersConfiguration {
 
     @Bean
     @ServiceConnection
@@ -67,6 +68,25 @@ class SchedulingServiceConfiguration {
 }
 
 @Configuration
+@Testcontainers
+class DockerModelRunnerConfiguration {
+
+    @Bean
+    @RestartScope
+    DockerModelRunnerContainer dmr() {
+        return new DockerModelRunnerContainer("alpine/socat:1.8.0.1");
+//                .withModel("ai/gemma3:4B-Q4_0"); // In next tc-java release 1.21.1
+    }
+
+    @Bean
+    DynamicPropertyRegistrar openAiProperties(DockerModelRunnerContainer dmr) {
+        return (properties) ->
+                properties.add("spring.ai.openai.base-url", dmr::getOpenAIEndpoint);
+    }
+
+}
+
+@Configuration
 class DogDataInitializerConfiguration {
 
     @Bean
@@ -85,7 +105,7 @@ class DogDataInitializerConfiguration {
                         "Daisy", "A spotted Poodle known for being affectionate.",
                         "Mia", "A grey Great Dane known for being loyal.",
                         "Molly", "A golden Chihuahua known for being curious.",
-                        "Prancer", "A demonic, neurotic, man hating, animal hating, children hating dogs that look like gremlins."
+                        "Prancer", "A demonic, neurotic, man hating, animal hating, children hating dog that looks like a gremlin."
                 );
                 map.forEach((name, description) -> {
                     var dog = dogRepository.save(new Dog(0, name, null, description));

@@ -6,6 +6,7 @@ import io.modelcontextprotocol.client.transport.HttpClientSseClientTransport;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -100,7 +101,8 @@ class ConversationalController {
         return chatClient
                 .prompt()
                 .user(question)
-                .advisors(questionAnswerAdvisor, promptChatMemoryAdvisor)
+                .advisors(questionAnswerAdvisor, promptChatMemoryAdvisor,
+                        new SimpleLoggerAdvisor())
                 .call()
                 .content();
     }
